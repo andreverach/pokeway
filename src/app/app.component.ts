@@ -1,13 +1,20 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PokemonStoreService } from './core/services/pokemon-store.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  template: '<router-outlet></router-outlet>',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'pokeway';
+  pokemonStoreService = inject(PokemonStoreService);
+
+  ngOnInit() {
+    this.pokemonStoreService.getAllPokemons(0, 10).subscribe();
+    this.pokemonStoreService.getAllTypeFilters().subscribe();
+  }
 }

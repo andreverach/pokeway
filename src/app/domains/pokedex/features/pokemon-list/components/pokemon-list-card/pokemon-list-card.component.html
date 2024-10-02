@@ -1,0 +1,32 @@
+<div class="group relative cursor-pointer" (click)="showPokemonDetailed()">
+  <div
+    class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
+  >
+    <img
+      [src]="pokemonInfo()?.sprites?.other?.dream_world?.front_default"
+      [alt]="pokemonInfo()?.name"
+      class="h-full w-full lg:h-full lg:w-full bg-cover bg-center"
+    />
+  </div>
+  <div class="mt-4 flex justify-between">
+    <div>
+      <h3 class="text-sm text-gray-700">
+        <a>
+          <span aria-hidden="true" class="absolute inset-0"></span>
+          {{ pokemonInfo()?.name | uppercase }}
+        </a>
+      </h3>
+      <p class="mt-1 text-sm text-gray-500">
+        @for (item of pokemonInfo()?.types; track $index) {
+        <span
+          class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
+          >{{ item.type.name }}</span
+        >
+        }
+      </p>
+    </div>
+    <p class="text-sm font-medium text-gray-900">
+      # {{ pokemonInfo()?.order }}
+    </p>
+  </div>
+</div>
