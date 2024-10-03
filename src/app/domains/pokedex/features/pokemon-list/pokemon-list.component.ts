@@ -4,6 +4,8 @@ import { SidebarMobileComponent } from '../../../../shared/components/sidebar-mo
 import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar.component';
 import { PokemonListCardComponent } from './components/pokemon-list-card/pokemon-list-card.component';
 import { PokemonStoreService } from '../../../../core/services/pokemon-store.service';
+import { LoadingService } from '../../../../shared/services/loading.service';
+import { PokeballLoaderComponent } from '../../../../shared/components/pokeball-loader/pokeball-loader.component';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -13,6 +15,7 @@ import { PokemonStoreService } from '../../../../core/services/pokemon-store.ser
     SidebarMobileComponent,
     SidebarComponent,
     PokemonListCardComponent,
+    PokeballLoaderComponent
   ],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss',
@@ -26,6 +29,8 @@ export default class PokemonListComponent {
       ? []
       : this.pokemonStoreService.pokemonList();
   });
+  private readonly loadingService = inject(LoadingService);
+  pokemonsLoading = this.loadingService.pokemonsLoader;
   toggleSidebarMenu() {
     this.sidebarMobile.update((prevState) => !prevState);
   }

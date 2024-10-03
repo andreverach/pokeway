@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { PokemonList } from '../interfaces/pokemonList';
 import { environment } from '../../../environments/environment';
-import { forkJoin, map, mergeMap, Observable, tap } from 'rxjs';
+import { forkJoin, mergeMap, Observable, tap } from 'rxjs';
 import { TypeList } from '../interfaces/typeList';
 import { PokemonInfo } from '../interfaces/pokemonInfo';
 
