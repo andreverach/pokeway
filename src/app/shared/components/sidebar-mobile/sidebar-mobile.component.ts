@@ -30,6 +30,7 @@ export class SidebarMobileComponent {
     this.toggle.emit(!this.showSideBarMenu);
   }
   filterByType(type: string) {
-    console.log('filterByType', type);
+    this.pokemonStoreService.getAllPokemonsByFilter(type, 0, 10).subscribe();
+    this.toggleSidebarMenu();
   }
 }

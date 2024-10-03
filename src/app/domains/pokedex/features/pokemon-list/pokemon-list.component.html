@@ -7,9 +7,7 @@
   <div
     class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-10"
   >
-    <h1 class="text-4xl font-bold tracking-tight text-gray-900">
-      Pokedex
-    </h1>
+    <h1 class="text-4xl font-bold tracking-tight text-gray-900">Pokedex</h1>
     <div class="flex items-center">
       <button
         (click)="toggleSidebarMenu()"
@@ -43,6 +41,7 @@
       <div class="lg:col-span-3">
         <div class="bg-white">
           <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+            @if(!pokemonsLoading()) {
             <div
               class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
             >
@@ -52,6 +51,24 @@
               ></app-pokemon-list-card>
               }
             </div>
+            } @else {
+            <div class="flex items-center justify-center">
+              <app-pokeball-loader />
+            </div>
+            } @if(!pokemonsLoading() && pokemons().length === 0) {
+            <div class="grid grid-cols-1 place-items-center">
+              <div>
+                <app-pokeball-loader />
+              </div>
+              <div>
+                <p
+                  class="text-4xl mt-10 font-bold tracking-tight text-gray-900"
+                >
+                  NO POKEMONS FOUND
+                </p>
+              </div>
+            </div>
+            }
           </div>
         </div>
       </div>

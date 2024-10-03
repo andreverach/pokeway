@@ -1,7 +1,15 @@
-import { Component, inject, input } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { PokemonInfo } from '../../../../../../core/interfaces/pokemonInfo';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { LoadingService } from '../../../../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-pokemon-list-card',
