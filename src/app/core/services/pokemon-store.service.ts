@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { PokemonList } from '../interfaces/pokemonList';
 import { environment } from '../../../environments/environment';
-import { forkJoin, mergeMap, Observable, tap } from 'rxjs';
+import { finalize, forkJoin, mergeMap, Observable, tap } from 'rxjs';
 import { TypeList } from '../interfaces/typeList';
 import { PokemonInfo } from '../interfaces/pokemonInfo';
 import { LoadingService } from '../../shared/services/loading.service';
@@ -26,26 +26,8 @@ export class PokemonStoreService {
     offset: POKEMON_PAGINATION_OFFSET,
     limit: POKEMON_PAGINATION_LIMIT,
   });
-  incrementPokemonPaginationParams() {
-    //incrementamos de manera que la siguiente peticion sera offset: cantidad actual osea el limit actual y el limit: sera más el limit constante
-    //entonces en nua primera llamada sera lo predefinido offset: 0 y limit 10
-    //incrementamos seria offset = al limit actual osea 10 y limit seria el limit actual mas el limit constante osea 10+10 = 20
-    //incrementamos seria offset = al limit actual osea 20 y limit seria el limit actual mas el limit constante osea 20+10 = 30
-    this.pokemonsListParams.update((prevState) => {
-      prevState.offset = prevState.offset + POKEMON_PAGINATION_LIMIT;
-      prevState.limit = prevState.limit;
-      return prevState;
-    });
-  }
-  resetPokemonPaginationParams() {
-    this.pokemonsListParams.set({
-      offset: POKEMON_PAGINATION_OFFSET,
-      limit: POKEMON_PAGINATION_LIMIT,
-    });
-  }
-  setCurrentTypeFilter(type: string) {
-    this.currentTypeFilter.set(type);
-  }
+
+  //request
   getAllPokemons(): Observable<any> {
     const offset = this.pokemonsListParams().offset;
     const limit = this.pokemonsListParams().limit;
@@ -54,6 +36,7 @@ export class PokemonStoreService {
     );
     //console.log('se consulta la url normal: ', apiUrl.toString());
     //esta 3era version es pensando en que quiero reutilizar el codigo del agrupamiento de las llamadas para obtener la info del pokemon
+    this.showLoading(offset);
     return this.httpClient.get<any>(apiUrl.toString()).pipe(
       mergeMap((response: any) => {
         //ahora solo llamo la funcion que he creado para que el tap reciba esa respuesta y asignarla al singal
@@ -65,7 +48,8 @@ export class PokemonStoreService {
         } else {
           this.addToPokemonList(responseDetailed);
         }
-      })
+      }),
+      finalize(() => this.hideLoading(offset))
     );
   }
   getAllTypeFilters(): Observable<any> {
@@ -83,6 +67,7 @@ export class PokemonStoreService {
     const apiUrl: URL = new URL(`${this.baseUrl}type/${type}`);
     //console.log('se consulta x tipos url: ', apiUrl.toString());
     //esta 3era version es pensando en que quiero reutilizar el codigo del agrupamiento de las llamadas para obtener la info del pokemon
+    this.showLoading(offset);
     return this.httpClient.get<any>(apiUrl.toString()).pipe(
       mergeMap((response: any) => {
         //ahora solo llamo la funcion que he creado para que el tap reciba esa respuesta y asignarla al singal
@@ -90,6 +75,9 @@ export class PokemonStoreService {
           'se obtienen los siguientes pokemon de este tipo: ',
           response.pokemon
         ); */
+        if (offset === 0) {
+          this.setPokemonList([]);
+        }
         const pokemonByFilter: PokemonList[] = response.pokemon
           .map((item: any) => {
             return item.pokemon;
@@ -111,23 +99,65 @@ export class PokemonStoreService {
         } else {
           this.addToPokemonList(responseDetailed);
         }
-      })
+      }),
+      finalize(() => this.hideLoading(offset))
     );
   }
-  getPokemonsInfo(pokemonList: PokemonList[]): Observable<PokemonInfo[]> {
+
+  //public functions
+  incrementPokemonPaginationParams() {
+    //incrementamos de manera que la siguiente peticion sera offset: cantidad actual osea el limit actual y el limit: sera más el limit constante
+    //entonces en nua primera llamada sera lo predefinido offset: 0 y limit 10
+    //incrementamos seria offset = al limit actual osea 10 y limit seria el limit actual mas el limit constante osea 10+10 = 20
+    //incrementamos seria offset = al limit actual osea 20 y limit seria el limit actual mas el limit constante osea 20+10 = 30
+    this.pokemonsListParams.update((prevState) => {
+      prevState.offset = prevState.offset + POKEMON_PAGINATION_LIMIT;
+      prevState.limit = prevState.limit;
+      return prevState;
+    });
+  }
+  resetPokemonPaginationParams() {
+    this.pokemonsListParams.set({
+      offset: POKEMON_PAGINATION_OFFSET,
+      limit: POKEMON_PAGINATION_LIMIT,
+    });
+  }
+  setCurrentTypeFilter(type: string) {
+    this.currentTypeFilter.set(type);
+  }
+
+  //private functions
+  private getPokemonsInfo(
+    pokemonList: PokemonList[]
+  ): Observable<PokemonInfo[]> {
     const pokemonDetailsRequests = pokemonList.map((pokemon: PokemonList) => {
       return this.httpClient.get<any>(pokemon.url);
     });
     return forkJoin(pokemonDetailsRequests);
   }
 
-  setPokemonList(pokemonInfo: PokemonInfo[]): void {
+  private setPokemonList(pokemonInfo: PokemonInfo[]): void {
     this.pokemonList.update((prevState) => [...pokemonInfo]);
   }
 
-  addToPokemonList(pokemonInfo: PokemonInfo[]): void {
+  private addToPokemonList(pokemonInfo: PokemonInfo[]): void {
     //this.pokemonList.update((prevState) => prevState.concat(pokemonInfo));
     this.pokemonList.update((prevState) => [...prevState, ...pokemonInfo]);
+  }
+
+  private showLoading(offset: number): void {
+    if (offset > 0) {
+      this.loadingService.showPokemonsLoaderMore();
+      return;
+    }
+    this.loadingService.showPokemonsLoader();
+  }
+  private hideLoading(offset: number): void {
+    if (offset > 0) {
+      this.loadingService.hidePokemonsLoaderMore();
+      return;
+    }
+    this.loadingService.hidePokemonsLoader();
   }
 }
 
