@@ -26,11 +26,16 @@ export class SidebarMobileComponent {
     return this.pokemonStoreService.typeFilters();
   });
   pokemonStoreService = inject(PokemonStoreService);
+  typeSelected = computed(() => {
+    return this.pokemonStoreService.currentTypeFilter();
+  });
   toggleSidebarMenu(): void {
     this.toggle.emit(!this.showSideBarMenu);
   }
   filterByType(type: string) {
-    this.pokemonStoreService.getAllPokemonsByFilter(type, 0, 10).subscribe();
+    this.pokemonStoreService.setCurrentTypeFilter(type);
+    this.pokemonStoreService.resetPokemonPaginationParams();
+    this.pokemonStoreService.getAllPokemonsByFilter(type).subscribe();
     this.toggleSidebarMenu();
   }
 }

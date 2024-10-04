@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   pokemonStoreService = inject(PokemonStoreService);
 
   ngOnInit() {
-    this.pokemonStoreService.getAllPokemons(0, 10).subscribe();
+    this.pokemonStoreService.getAllPokemons().subscribe();
     this.pokemonStoreService.getAllTypeFilters().subscribe();
   }
 }
