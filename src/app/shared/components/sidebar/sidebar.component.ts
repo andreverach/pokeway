@@ -15,6 +15,8 @@ export class SidebarComponent {
   pokemonStoreService = inject(PokemonStoreService);
 
   filterByType(type: string) {
-    this.pokemonStoreService.getAllPokemonsByFilter(type, 0, 10).subscribe();
+    this.pokemonStoreService.setCurrentTypeFilter(type);
+    this.pokemonStoreService.resetPokemonPaginationParams();
+    this.pokemonStoreService.getAllPokemonsByFilter(type).subscribe();
   }
 }

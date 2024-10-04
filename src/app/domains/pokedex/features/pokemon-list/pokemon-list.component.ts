@@ -15,7 +15,7 @@ import { PokeballLoaderComponent } from '../../../../shared/components/pokeball-
     SidebarMobileComponent,
     SidebarComponent,
     PokemonListCardComponent,
-    PokeballLoaderComponent
+    PokeballLoaderComponent,
   ],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss',
@@ -23,15 +23,27 @@ import { PokeballLoaderComponent } from '../../../../shared/components/pokeball-
 export default class PokemonListComponent {
   sidebarMobile = signal(false);
   pokemonStoreService = inject(PokemonStoreService);
-  pokemons = computed(() => {
-    console.log(this.pokemonStoreService.pokemonList().length);
+  pokemons = computed(() => {    
     return this.pokemonStoreService.pokemonList().length === 0
       ? []
       : this.pokemonStoreService.pokemonList();
   });
   private readonly loadingService = inject(LoadingService);
   pokemonsLoading = this.loadingService.pokemonsLoader;
+  pokemonsLoadingMore = this.loadingService.pokemonsLoaderMore;
   toggleSidebarMenu() {
     this.sidebarMobile.update((prevState) => !prevState);
+  }
+  loadMorePokemons() {
+    //si existe tipo entonces llamar al typefilter
+    //si no existe tipo entonces llamar al get all
+    this.pokemonStoreService.incrementPokemonPaginationParams();
+    if (this.pokemonStoreService.currentTypeFilter() !== '') {
+      this.pokemonStoreService
+        .getAllPokemonsByFilter(this.pokemonStoreService.currentTypeFilter())
+        .subscribe();
+    } else {
+      this.pokemonStoreService.getAllPokemons().subscribe();
+    }
   }
 }
