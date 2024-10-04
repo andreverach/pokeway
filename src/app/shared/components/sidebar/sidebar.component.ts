@@ -13,7 +13,9 @@ export class SidebarComponent {
     return this.pokemonStoreService.typeFilters();
   });
   pokemonStoreService = inject(PokemonStoreService);
-
+  typeSelected = computed(() => {
+    return this.pokemonStoreService.currentTypeFilter();
+  });
   filterByType(type: string) {
     this.pokemonStoreService.setCurrentTypeFilter(type);
     this.pokemonStoreService.resetPokemonPaginationParams();

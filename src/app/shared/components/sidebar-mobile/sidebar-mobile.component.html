@@ -67,12 +67,19 @@
         <ul role="list" class="px-2 py-3 font-medium text-gray-900">
           @for (filter of typeFilters(); track $index) {
           <li>
+            @if(typeSelected() === filter.name) {
+            <a
+              class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
+              >{{ filter.name }}</a
+            >
+            } @else {
             <a
               href="#"
               class="block px-2 py-3"
               (click)="filterByType(filter.name)"
               >{{ filter.name }}</a
             >
+            }
           </li>
           }
         </ul>
