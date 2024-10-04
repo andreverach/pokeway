@@ -6,7 +6,7 @@ export default [
     loadComponent: () => import('./pokemon-list/pokemon-list.component'),
   },
   {
-    path: 'detail/:pokemonName',
+    path: 'pokedex/:pokemonName',
     loadComponent: () => import('./pokemon-detail/pokemon-detail.component'),
   },
 ] as Routes;

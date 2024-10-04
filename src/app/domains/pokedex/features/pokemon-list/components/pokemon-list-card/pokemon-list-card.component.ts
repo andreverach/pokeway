@@ -22,7 +22,7 @@ export class PokemonListCardComponent {
   pokemonInfo = input<PokemonInfo>();
   private readonly router = inject(Router);
   showPokemonDetailed() {
-    this.router.navigate(['detail', this.pokemonInfo()?.name]);
+    this.router.navigate(['pokedex', this.pokemonInfo()?.name]);
     /**
      * this.router.navigate(['users', userId, 'orders'], {
       queryParams: { showCompletedOrders: true },
