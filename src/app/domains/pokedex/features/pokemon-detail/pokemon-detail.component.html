@@ -1,1 +1,50 @@
-<p>pokemon-detail works!</p>
+<div class="bg-gray-100">
+  <div
+    class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 px-4 pt-24 sm:px-6 sm:pt-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8"
+  >
+    <div>
+      <!-- header con nombre y descripcion -->
+      <div class="name-container">
+        <a routerLink="/" class="cursor-pointer">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6 stroke-emerald-500"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+            />
+          </svg>
+        </a>
+        <h2
+          class="text-3xl font-bold tracking-tight text-emerald-900 sm:text-4xl"
+        >
+          {{ pokemonData()?.name | uppercase }}
+        </h2>
+      </div>
+      <p class="mt-4 text-gray-500">
+        {{
+          specieData().flavor_text_entries[0].flavor_text | clearTextDescription
+        }}
+      </p>
+      <!-- listado de estadisticas -->
+      <app-pokedex-about
+        [pokemonData]="pokemonData()"
+        [specieData]="specieData()"
+      ></app-pokedex-about>
+      @if(pokemonData()?.stats) {
+      <app-pokedex-stats [pokemonData]="pokemonData()"></app-pokedex-stats>
+      }
+    </div>
+    <!-- imagenes -->
+    <app-pokedex-gallery
+      [spritesInfo]="pokemonData()?.sprites || null"
+    ></app-pokedex-gallery>
+  </div>
+  <app-pokedex-evolution-chain></app-pokedex-evolution-chain>
+</div>

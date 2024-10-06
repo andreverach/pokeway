@@ -160,32 +160,3 @@ export class PokemonStoreService {
     this.loadingService.hidePokemonsLoader();
   }
 }
-
-//ahora en este caso lo que quiero es hacer una peticion por cada resultado lo que me obliga a agrupar peticiones para obtener ese resultado final
-/* return this.httpClient.get<any>(apiUrl.toString()).pipe(
-      mergeMap((response: any) => {
-        // Creamos un array de observables para cada petición adicional
-        const pokemonDetailsRequests = response.results.map(
-          (pokemon: PokemonList) => {
-            return this.httpClient.get<any>(pokemon.url);
-          }
-        );
-        // Usamos forkJoin para ejecutar todas las peticiones agrupadas en pokemonDetailsRequests de manera paralela
-        return forkJoin(pokemonDetailsRequests);
-      }),
-      map((responsePokemonDetailsRequests) => {
-        return responsePokemonDetailsRequests as PokemonInfo[];
-      }),
-      tap((responseDetailed: PokemonInfo[]) => {
-        this.pokemonList.update((prevState) => responseDetailed);
-        console.log(this.pokemonList());
-      })
-    ); */
-
-//este caso seria uno normal donde con tap puedo hacer cosas y retornare los datos, en este caso queria setear el signal pokemonList para que ya este disponible
-/* return this.httpClient.get<any>(apiUrl.toString()).pipe(
-      tap((response: any) => {
-        this.pokemonList.update((prevState) => response.results);
-        console.log(this.pokemonList())
-      })
-    ); */

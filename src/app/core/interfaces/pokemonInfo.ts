@@ -8,9 +8,15 @@ export interface PokemonInfo {
   weight: number;
   species: Species;
   sprites: Sprites;
-  ability: Ability[];
+  abilities: Ability[];
   stats: Statistic[];
   types: Type[];
+  cries: Cries; //cries son los sonidos que hace
+}
+
+export interface Cries {
+  latest: string;
+  legacy: string;
 }
 
 export interface Species {
@@ -19,28 +25,29 @@ export interface Species {
 }
 
 export interface Sprites {
+  back_default: string;
+  front_default: string;
   other: Other;
 }
 
 export interface Other {
   dream_world: DreamWorld;
   showdown: Showdown;
+  home: OtherHomeImage;
 }
-
+export interface OtherHomeImage {
+  front_default: string;
+}
+export interface OficialArtWork {
+  front_default: string;
+}
 export interface DreamWorld {
   front_default: string;
-  front_female: any;
 }
 
 export interface Showdown {
   back_default: string;
-  back_female: string;
-  back_shiny: string;
-  back_shiny_female: any;
   front_default: string;
-  front_female: string;
-  front_shiny: string;
-  front_shiny_female: string;
 }
 
 export interface Ability {

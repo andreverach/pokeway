@@ -1,0 +1,18 @@
+<div class="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+  @for (largeSprite of largeImages(); track $index) {
+  <img
+    [src]="largeSprite.url"
+    [alt]="largeSprite.alt"
+    class="rounded-lg w-full h-full object-cover border border-emerald-400 bg-gray-200"
+  />
+  }
+</div>
+<div class="grid grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mt-10">
+  @for (smallSprite of smallImages(); track $index) {
+  <img
+    [src]="smallSprite.url"
+    [alt]="smallSprite.alt"
+    class="rounded-lg w-full h-full border border-emerald-400 bg-gray-200"
+  />
+  }
+</div>
