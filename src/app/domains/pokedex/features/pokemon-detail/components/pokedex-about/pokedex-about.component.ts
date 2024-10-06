@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { PokemonInfo } from '../../../../../../core/interfaces/pokemonInfo';
 
 @Component({
   selector: 'app-pokedex-about',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './pokedex-about.component.scss'
 })
 export class PokedexAboutComponent {
-
+  pokemonData = input<PokemonInfo | null>(null);
 }

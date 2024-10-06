@@ -9,6 +9,8 @@ import { PokedexAboutComponent } from './components/pokedex-about/pokedex-about.
 import { PokedexStatsComponent } from './components/pokedex-stats/pokedex-stats.component';
 import { PokedexGalleryComponent } from './components/pokedex-gallery/pokedex-gallery.component';
 import { PokedexEvolutionChainComponent } from './components/pokedex-evolution-chain/pokedex-evolution-chain.component';
+import { SpecieInfo } from '../../../../core/interfaces/specieInfo';
+import { EvolutionChainInfo } from '../../../../core/interfaces/evolutionChainInfo';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -31,6 +33,8 @@ export default class PokemonDetailComponent implements OnInit {
   );
   private readonly pokemonStoreService = inject(PokemonStoreService);
   pokemonData = signal<PokemonInfo | null>(null);
+  specieData = signal<SpecieInfo | null>(null);
+  evolutionData = signal<EvolutionChainInfo | null>(null);
   ngOnInit(): void {
     //en caso de no encontrar pokemon puede que sea porque directamente vino a esta pagina y aun no se ha llenado el signal de los pokemones
     //entonces mostrar la caja de busqueda o siempre que este la caja
@@ -52,6 +56,7 @@ export default class PokemonDetailComponent implements OnInit {
         //console.log('pokemonFounded', pokemonFounded);
         if (pokemonFounded) {
           this.pokemonData.set(pokemonFounded);
+          console.log('pokemonFounded', this.pokemonData());
         } else {
           //se debe habilitar la busqueda de pokemon
           //se busca al pokemon y se trae toda la info extra

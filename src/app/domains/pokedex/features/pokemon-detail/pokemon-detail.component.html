@@ -33,11 +33,13 @@
         from new ones, or can be used to archive important task lists.
       </p>
       <!-- listado de estadisticas -->
-      <app-pokedex-about></app-pokedex-about>
-      <app-pokedex-stats></app-pokedex-stats>
+      <app-pokedex-about [pokemonData]="pokemonData()"></app-pokedex-about>
+      <app-pokedex-stats [pokemonData]="pokemonData()"></app-pokedex-stats>
     </div>
     <!-- imagenes -->
-    <app-pokedex-gallery></app-pokedex-gallery>
+    <app-pokedex-gallery
+      [spritesInfo]="pokemonData()?.sprites || null"
+    ></app-pokedex-gallery>
   </div>
   <app-pokedex-evolution-chain></app-pokedex-evolution-chain>
 </div>
