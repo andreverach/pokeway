@@ -16,5 +16,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.pokemonStoreService.getAllPokemons().subscribe();
     this.pokemonStoreService.getAllTypeFilters().subscribe();
+    //tambien llamar al servicio que me trae todos los nombres de los pokemons para ponerlos en la caja donde se buscaran pokemons como resultados
+    //asi como una lista de resultados de busqueda y al elegir uno ya se hace toda la cosa
   }
 }

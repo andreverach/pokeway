@@ -11,6 +11,12 @@ export interface PokemonInfo {
   ability: Ability[];
   stats: Statistic[];
   types: Type[];
+  cries: Cries; //cries son los sonidos que hace
+}
+
+export interface Cries {
+  latest: string;
+  legacy: string;
 }
 
 export interface Species {
