@@ -36,6 +36,7 @@
       <app-pokedex-about
         [pokemonData]="pokemonData()"
         [specieData]="specieData()"
+        [evolutionData]="evolutionData()"
       ></app-pokedex-about>
       @if(pokemonData()?.stats) {
       <app-pokedex-stats [pokemonData]="pokemonData()"></app-pokedex-stats>
@@ -46,5 +47,5 @@
       [spritesInfo]="pokemonData()?.sprites || null"
     ></app-pokedex-gallery>
   </div>
-  <app-pokedex-evolution-chain></app-pokedex-evolution-chain>
+  <app-pokedex-evolution-chain [evolutionData]="evolutionData()"></app-pokedex-evolution-chain>
 </div>

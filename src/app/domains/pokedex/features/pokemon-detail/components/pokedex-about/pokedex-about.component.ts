@@ -4,6 +4,8 @@ import { SpecieInfo } from '../../../../../../core/interfaces/specieInfo';
 import { SPECIE_INFO_EMPTY } from '../../../../../../shared/constants/specieInfo.constant';
 import { UpperCasePipe } from '@angular/common';
 import { RomanToNumberPipe } from '../../../../../../shared/pipes/roman-to-number.pipe';
+import { EvolutionChainInfo } from '../../../../../../core/interfaces/evolutionChainInfo';
+import { EVOLUTION_CHAIN_INFO_EMPTY } from '../../../../../../shared/constants/evolutionChainInfo.constant';
 
 @Component({
   selector: 'app-pokedex-about',
@@ -15,4 +17,5 @@ import { RomanToNumberPipe } from '../../../../../../shared/pipes/roman-to-numbe
 export class PokedexAboutComponent {
   pokemonData = input<PokemonInfo | null>(null);
   specieData = input<SpecieInfo>(SPECIE_INFO_EMPTY);
+  evolutionData = input<EvolutionChainInfo>(EVOLUTION_CHAIN_INFO_EMPTY);
 }
