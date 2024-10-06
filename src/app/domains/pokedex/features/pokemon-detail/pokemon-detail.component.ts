@@ -15,6 +15,7 @@ import { PokedexService } from '../../../../core/services/pokedex.service';
 import { PokedexInfo } from '../../../../core/interfaces/pokedexInfo';
 import { SPECIE_INFO_EMPTY } from '../../../../shared/constants/specieInfo.constant';
 import { ClearTextDescriptionPipe } from '../../../../shared/pipes/clear-text-description.pipe';
+import { EVOLUTION_CHAIN_INFO_EMPTY } from '../../../../shared/constants/evolutionChainInfo.constant';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -40,7 +41,7 @@ export default class PokemonDetailComponent implements OnInit {
   private readonly pokemonStoreService = inject(PokemonStoreService);
   pokemonData = signal<PokemonInfo | null>(null);
   specieData = signal<SpecieInfo>(SPECIE_INFO_EMPTY);
-  evolutionData = signal<EvolutionChainInfo | null>(null);
+  evolutionData = signal<EvolutionChainInfo>(EVOLUTION_CHAIN_INFO_EMPTY);
   ngOnInit(): void {
     //en caso de no encontrar pokemon puede que sea porque directamente vino a esta pagina y aun no se ha llenado el signal de los pokemones
     //entonces mostrar la caja de busqueda o siempre que este la caja
@@ -52,12 +53,12 @@ export default class PokemonDetailComponent implements OnInit {
         //se busca al pokemon y se trae toda la info extra
         //incluso este if no iria ya que el servicio y logica iria en una fnucion por abajo que se llamaria al buscar desde la caja
         //enviando el nombre y trayendo toda la data
-        console.log('NO_POKEMON_PARAM => ', nameParam);
+        //console.log('NO_POKEMON_PARAM => ', nameParam);
       }
       if (nameParam) {
         //se debe habilitar la busqueda de pokemon tambien para que navegue entre pokemons
         //ya se tiene info el pokemon solo traer la extra
-        console.log('POKEMON_PARAM => ', nameParam);
+        //console.log('POKEMON_PARAM => ', nameParam);
         const pokemonFounded = this.pokemonStoreService
           .pokemonList()
           .find((pokemon) => pokemon.name === nameParam);
@@ -65,22 +66,22 @@ export default class PokemonDetailComponent implements OnInit {
         if (pokemonFounded) {
           this.pokemonData.set(pokemonFounded);
           this.pokedexService
-            .getExtraInfo(pokemonFounded.species.url)
+            .getExtraInfo(pokemonFounded)
             .subscribe((pokedexInfo: PokedexInfo) => {
-              console.log('pokedexInfo', pokedexInfo);
+              //console.log('pokedexInfo', pokedexInfo);
               this.specieData.set(pokedexInfo.specieInfo);
               this.evolutionData.set(pokedexInfo.evolutionChainInfo);
             });
         } else {
           //se debe habilitar la busqueda de pokemon
           //se busca al pokemon y se trae toda la info extra
-          console.log('pokemonNotFounded => ', nameParam);
+          //console.log('pokemonNotFounded => ', nameParam);
           this.pokedexService
             .getPokemonInfo(nameParam)
             .pipe(
               switchMap((pokemon) => {
                 this.pokemonData.set(pokemon);
-                return this.pokedexService.getExtraInfo(pokemon.species.url);
+                return this.pokedexService.getExtraInfo(pokemon);
               })
             )
             .subscribe((pokedexInfo: PokedexInfo) => {
