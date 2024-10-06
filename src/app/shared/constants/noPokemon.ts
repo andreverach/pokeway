@@ -1,1 +1,1 @@
-export const NO_POKEMON_SEARCHED = 'no-pokemon';
+export const NO_POKEMON_PARAM = 'no-pokemon';

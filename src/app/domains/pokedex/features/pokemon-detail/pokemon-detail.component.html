@@ -28,13 +28,18 @@
         </h2>
       </div>
       <p class="mt-4 text-gray-500">
-        The walnut wood card tray is precision milled to perfectly fit a stack
-        of Focus cards. The powder coated steel divider separates active cards
-        from new ones, or can be used to archive important task lists.
+        {{
+          specieData().flavor_text_entries[0].flavor_text | clearTextDescription
+        }}
       </p>
       <!-- listado de estadisticas -->
-      <app-pokedex-about [pokemonData]="pokemonData()"></app-pokedex-about>
+      <app-pokedex-about
+        [pokemonData]="pokemonData()"
+        [specieData]="specieData()"
+      ></app-pokedex-about>
+      @if(pokemonData()?.stats) {
       <app-pokedex-stats [pokemonData]="pokemonData()"></app-pokedex-stats>
+      }
     </div>
     <!-- imagenes -->
     <app-pokedex-gallery
