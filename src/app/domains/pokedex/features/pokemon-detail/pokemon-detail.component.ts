@@ -1,9 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLinkWithHref } from '@angular/router';
 import { map, switchMap } from 'rxjs';
 import { PokemonInfo } from '../../../../core/interfaces/pokemonInfo';
 import { PokemonStoreService } from '../../../../core/services/pokemon-store.service';
-import { UpperCasePipe } from '@angular/common';
+import { CommonModule, UpperCasePipe } from '@angular/common';
 import { NO_POKEMON_PARAM } from '../../../../shared/constants/noPokemon';
 import { PokedexAboutComponent } from './components/pokedex-about/pokedex-about.component';
 import { PokedexStatsComponent } from './components/pokedex-stats/pokedex-stats.component';
@@ -16,11 +16,15 @@ import { PokedexInfo } from '../../../../core/interfaces/pokedexInfo';
 import { SPECIE_INFO_EMPTY } from '../../../../shared/constants/specieInfo.constant';
 import { ClearTextDescriptionPipe } from '../../../../shared/pipes/clear-text-description.pipe';
 import { EVOLUTION_CHAIN_INFO_EMPTY } from '../../../../shared/constants/evolutionChainInfo.constant';
+import { FormsModule } from '@angular/forms';
+import { SearcherComponent } from '../../../../shared/components/searcher/searcher.component';
 
 @Component({
   selector: 'app-pokemon-detail',
   standalone: true,
   imports: [
+    CommonModule,
+    FormsModule,
     RouterLinkWithHref,
     UpperCasePipe,
     PokedexAboutComponent,
@@ -28,6 +32,7 @@ import { EVOLUTION_CHAIN_INFO_EMPTY } from '../../../../shared/constants/evoluti
     PokedexGalleryComponent,
     PokedexEvolutionChainComponent,
     ClearTextDescriptionPipe,
+    SearcherComponent,
   ],
   templateUrl: './pokemon-detail.component.html',
   styleUrl: './pokemon-detail.component.scss',
@@ -42,6 +47,10 @@ export default class PokemonDetailComponent implements OnInit {
   pokemonData = signal<PokemonInfo | null>(null);
   specieData = signal<SpecieInfo>(SPECIE_INFO_EMPTY);
   evolutionData = signal<EvolutionChainInfo>(EVOLUTION_CHAIN_INFO_EMPTY);
+  havePokemonData = computed(() => {
+    //console.log('this.evolutionData().id', this.evolutionData().id);
+    return this.evolutionData().id > 0;
+  });
   ngOnInit(): void {
     //en caso de no encontrar pokemon puede que sea porque directamente vino a esta pagina y aun no se ha llenado el signal de los pokemones
     //entonces mostrar la caja de busqueda o siempre que este la caja
@@ -85,7 +94,6 @@ export default class PokemonDetailComponent implements OnInit {
               })
             )
             .subscribe((pokedexInfo: PokedexInfo) => {
-              console.log('pokedexInfo', pokedexInfo);
               this.specieData.set(pokedexInfo.specieInfo);
               this.evolutionData.set(pokedexInfo.evolutionChainInfo);
             });
@@ -94,8 +102,21 @@ export default class PokemonDetailComponent implements OnInit {
     });
   }
 
-  getPokedexInfo() {}
+  getPokedexInfo(pokemonName: string) {
+    this.pokedexService
+      .getPokemonInfo(pokemonName)
+      .pipe(
+        switchMap((pokemon) => {
+          this.pokemonData.set(pokemon);
+          return this.pokedexService.getExtraInfo(pokemon);
+        })
+      )
+      .subscribe((pokedexInfo: PokedexInfo) => {
+        this.specieData.set(pokedexInfo.specieInfo);
+        this.evolutionData.set(pokedexInfo.evolutionChainInfo);
+      });
+  }
 }
 //https://angular.love/angular-router-everything-you-need-to-know-about
 //location.reload(true);
-//graficos ng2chart tiene radar
+//seria bueno agrupar en funciones lo del oninit para reusar

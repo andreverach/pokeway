@@ -14,6 +14,12 @@ export interface PokemonInfo {
   cries: Cries; //cries son los sonidos que hace
 }
 
+export interface PokemonAutoCompleteItem {
+  name: string;
+  url: string;
+}
+
+
 export interface Cries {
   latest: string;
   legacy: string;
