@@ -4,7 +4,10 @@ import { PokemonList } from '../interfaces/pokemonList';
 import { environment } from '../../../environments/environment';
 import { finalize, forkJoin, mergeMap, Observable, tap } from 'rxjs';
 import { TypeList } from '../interfaces/typeList';
-import { PokemonInfo } from '../interfaces/pokemonInfo';
+import {
+  PokemonAutoCompleteItem,
+  PokemonInfo,
+} from '../interfaces/pokemonInfo';
 import { LoadingService } from '../../shared/services/loading.service';
 import { PokemonPaginationParams } from '../interfaces/pokemonPaginationParams';
 import {
@@ -20,6 +23,7 @@ export class PokemonStoreService {
   private loadingService = inject(LoadingService);
   private baseUrl = environment.apiV2;
   pokemonList = signal<PokemonInfo[]>([]);
+  pokemonAutoCompleteList = signal<PokemonAutoCompleteItem[]>([]);
   typeFilters = signal<TypeList[]>([]);
   currentTypeFilter = signal<string>('');
   pokemonsListParams = signal<PokemonPaginationParams>({
@@ -101,6 +105,16 @@ export class PokemonStoreService {
         }
       }),
       finalize(() => this.hideLoading(offset))
+    );
+  }
+  getCompletePokemons(): Observable<any> {
+    const apiUrl: URL = new URL(
+      `${this.baseUrl}pokemon?offset=${0}&limit=${1032}`
+    );
+    return this.httpClient.get<any>(apiUrl.toString()).pipe(
+      tap((response: any) => {
+        this.pokemonAutoCompleteList.set(response.results);
+      })
     );
   }
 

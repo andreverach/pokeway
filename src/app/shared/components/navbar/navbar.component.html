@@ -14,20 +14,24 @@
             <!-- Current: "bg-emerald-900 text-white", Default: "text-gray-300 hover:bg-emerald-700 hover:text-white" -->
             <a
               routerLink="/"
-              class="rounded-md bg-emerald-900 px-3 py-2 text-sm font-medium text-white"
+              routerLinkActive="bg-emerald-900 text-white"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-emerald-700 hover:text-white"
               aria-current="page"
               >Pokemons</a
             >
             <a
-              href="pokedex/no-pokemon"
+              routerLink="pokedex/no-pokemon"
+              routerLinkActive="bg-emerald-900 text-white"
+              [routerLinkActiveOptions]="{ exact: true }"
               class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-emerald-700 hover:text-white"
               >Pokedex</a
             >
-            <a
+            <!-- <a
               href="#"
               class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-emerald-700 hover:text-white"
               >Game</a
-            >
+            > -->
           </div>
         </div>
       </div>
