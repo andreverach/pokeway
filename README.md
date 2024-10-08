@@ -32,7 +32,7 @@ See the application deployed in Netlify at the following link:
 ## Screenshots
 
 ### Página principal - Listado de Pokémon
-![Pokemon list](https://drhuemura.netlify.app/assets/images/pokemon-list.png)
+![Pokemon list](https://drhuemura.netlify.app/assets/images/pokemons-list.png)
 
 ### Información detallada de un Pokémon
 ![Pokedex](https://drhuemura.netlify.app/assets/images/detail-pokemon.png)
