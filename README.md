@@ -31,10 +31,10 @@ See the application deployed in Netlify at the following link:
 
 ## Screenshots
 
-### Página principal - Listado de Pokémon
+### Pokemon list
 ![Pokemon list](https://drhuemura.netlify.app/assets/images/pokemons-list.png)
 
-### Información detallada de un Pokémon
+### Pokedex
 ![Pokedex](https://drhuemura.netlify.app/assets/images/detail-pokemon.png)
 
 ## Installation and local use
