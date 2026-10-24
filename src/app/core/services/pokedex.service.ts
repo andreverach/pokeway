@@ -42,7 +42,7 @@ export class PokedexService {
           `${specieResponse.evolution_chain.url}`
         );
         return this.httpClient.get<EvolutionChainInfo>(`${evolutionUrl}`).pipe(
-          mergeMap((evolutionChainResponse: EvolutionChainInfo) => {
+          mergeMap((evolutionChainResponse: EvolutionChainInfo) => {            
             return this.getEvolutionChainGallery(
               pokemonInfo,
               evolutionChainResponse
@@ -91,6 +91,11 @@ export class PokedexService {
         //evolutionChainRequests.push(`${this.baseUrl}pokemon/${pokemon.name}`)
       }
     });
+    if(evolutionChainRequests.length < 1 ){ // si no tiene evoluciones su unica evolucion será el mismo para evitar mostrar un detalle vacio      
+      evolutionChainRequests.push(
+          this.httpClient.get<any>(`${this.baseUrl}pokemon/${fromPokemon.name}`)
+        );
+    }    
     return forkJoin(evolutionChainRequests);
   }
 
