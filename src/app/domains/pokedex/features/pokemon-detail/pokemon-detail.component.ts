@@ -47,8 +47,7 @@ export default class PokemonDetailComponent implements OnInit {
   pokemonData = signal<PokemonInfo | null>(null);
   specieData = signal<SpecieInfo>(SPECIE_INFO_EMPTY);
   evolutionData = signal<EvolutionChainInfo>(EVOLUTION_CHAIN_INFO_EMPTY);
-  havePokemonData = computed(() => {
-    //console.log('this.evolutionData().id', this.evolutionData().id);
+  havePokemonData = computed(() => {    
     return this.evolutionData().id > 0;
   });
   ngOnInit(): void {
